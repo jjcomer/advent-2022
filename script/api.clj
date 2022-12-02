@@ -39,7 +39,7 @@
         (let [url (format "https://adventofcode.com/%s/day/%s/input" year day)
               _ (println "Fetching:" url)
               input @(http/get url {:headers {"Cookie" (str "session=" session)}
-                                    :user-agent "github.com/jjcomer/aoc-helper"})]
+                                    :user-agent "github.com/jjcomer/aoc-helper by joshjcomer@gmail.com"})]
           (when-not (fs/exists? base-path)
             (fs/create-dir base-path))
           (spit (str input-path) (:body input))
