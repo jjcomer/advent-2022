@@ -35,27 +35,27 @@
            ty)]
     [tx ty]))
 
-(defn compute-move [visited head-location tail-location direction distance]
-  (if (zero? distance)
-    [visited head-location tail-location]
-    (let [new-head-location (move-head head-location direction)
-          new-tail-location (move-tail new-head-location tail-location)]
-      (compute-move (conj visited new-tail-location)
-                    new-head-location
-                    new-tail-location
-                    direction
-                    (dec distance)))))
-
-(defn compute-move2 [visited head-location tails direction distance]
+(defn compute-move [visited head-location tails direction distance]
   (if (zero? distance)
     [visited head-location tails]
     (let [new-head-location (move-head head-location direction)
           new-tails (rest (reductions move-tail new-head-location tails))]
-      (compute-move2 (conj visited (last new-tails))
-                     new-head-location
-                     new-tails
-                     direction
-                     (dec distance)))))
+      (compute-move (conj visited (last new-tails))
+                    new-head-location
+                    new-tails
+                    direction
+                    (dec distance)))))
+
+(defn solve-rope [input size]
+  (loop [commands input head [0 0] tail (repeat size [0 0]) visited #{}]
+    (if-let [[direction distance] (first commands)]
+      (let [[visited head tail] (compute-move visited
+                                              head
+                                              tail
+                                              direction
+                                              distance)]
+        (recur (rest commands) head tail visited))
+      (count visited))))
 
 ;; Entry Points
 
@@ -70,28 +70,12 @@
 (defn solve-part-1
   "The solution to part 1. Will be called with the result of the generator"
   [input]
-  (loop [commands input head [0 0] tail [0 0] visited #{}]
-    (if-let [[direction distance] (first commands)]
-      (let [[visited head tail] (compute-move visited
-                                              head
-                                              tail
-                                              direction
-                                              distance)]
-        (recur (rest commands) head tail visited))
-      (count visited))))
+  (solve-rope input 1))
 
 (defn solve-part-2
   "The solution to part 2. Will be called with the result of the generator"
   [input]
-  (loop [commands input head [0 0] tails (repeat 9 [0 0]) visited #{}]
-    (if-let [[direction distance] (first commands)]
-      (let [[visited head tails] (compute-move2 visited
-                                                head
-                                                tails
-                                                direction
-                                                distance)]
-        (recur (rest commands) head tails visited))
-      (count visited))))
+  (solve-rope input 9))
 
 ;; Tests
 ;; Use tests to verify your solution. Consider using the sample data provided in the question
