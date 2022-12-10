@@ -14,11 +14,6 @@
 
 ;; Solution Logic
 
-(defn execute-command [cycle x {:keys [command value]}]
-  (case command
-    :noop [(inc cycle) x]
-    :addx [(+ 2)]))
-
 (defn simulate [commands cycles-to-find]
   (loop [cycle 0 x 1 cycles-to-find cycles-to-find found-cycles {} commands commands pending-command nil]
     #_(println "cycle" cycle "x" x "pending" pending-command)
