@@ -45,21 +45,18 @@
 (defn solve-part-1
   "The solution to part 1. Will be called with the result of the generator"
   [input]
-  (let [result (->> input
-                    (map-indexed (fn [i [l r]]
-                                   [(inc i) l r]))
-                    (filter (fn [[_ l r]]
-                              (= -1 (compare-packets l r))))
-                    (map first))]
-    (println result)
-    (reduce + result)))
+  (->> input
+       (map-indexed (fn [i [l r]] [(inc i) l r]))
+       (filter (fn [[_ l r]] (= -1 (compare-packets l r))))
+       (map first)
+       (reduce +)))
 
 (defn solve-part-2
   "The solution to part 2. Will be called with the result of the generator"
   [input]
-  (let [packets (conj (mapcat identity input) [[2]] [[6]])
-        sorted (sort compare-packets packets)]
-    (->> sorted
+  (let [packets (conj (mapcat identity input) [[2]] [[6]])]
+    (->> packets
+         (sort compare-packets)
          (map-indexed vector)
          (filter #(or (= (second %) [[2]]) (= (second %) [[6]])))
          (map first)
