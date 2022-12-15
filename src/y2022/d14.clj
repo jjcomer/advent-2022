@@ -86,13 +86,13 @@
 (defn solve-part-1
   "The solution to part 1. Will be called with the result of the generator"
   [input]
-  (let [[cave sand-count] (simulate-sand input false)]
+  (let [[_ sand-count] (simulate-sand input false)]
     sand-count))
 
 (defn solve-part-2
   "The solution to part 2. Will be called with the result of the generator"
   [input]
-  (let [[cave sand-count] (simulate-sand input true)]
+  (let [[_ sand-count] (simulate-sand input true)]
     sand-count))
 
 ;; Tests
